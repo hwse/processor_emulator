@@ -3,8 +3,9 @@
 
 struct processor {
     uint8_t reg_a, reg_b, reg_c, reg_d; // registers with 8 byte content
-    uint8_t* prog_counter;              // address of current op 
-    bool zero_flag, carry_flag;        // flags modified by some instructions 
+    uint8_t* memory;     // address of the simulated memory
+    uint8_t* prog_counter;      // address of the current op 
+    bool zero_flag, carry_flag;         // flags modified by some instructions 
     bool on;                            // is processor on
 };
 typedef struct processor processor;
@@ -30,7 +31,15 @@ typedef uint8_t operation;
 #define MV_D_A 29 //from d move
 #define MV_D_B 30
 #define MV_D_C 31 
-// TODO: memory access
+#define MV_MEM_A 32 //move from memory to register
+#define MV_MEM_B 33
+#define MV_MEM_C 34
+#define MV_MEM_D 35
+#define MV_A_MEM 36 //move from register to memory
+#define MV_B_MEM 37
+#define MV_C_MEM 38
+#define MV_D_MEM 39
+
 
 // artithmetic operations
 #define ADD_A 64 // add regsiter to a
@@ -58,8 +67,14 @@ typedef uint8_t operation;
 #define DEC_C 86
 #define DEC_D 88
 
+//JUMP operations
+#define JMP 128
+#define JZ 129
+#define JNZ 130
+
 processor* init_processor(uint8_t* memory);
 void run(processor* proc);
+void run_verbose(processor* proc);
 
 void print_state(processor* proc);
 void execute_opertion(processor* proc);
